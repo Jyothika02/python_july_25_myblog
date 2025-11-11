@@ -1,0 +1,121 @@
+{% extends "blogApp/base.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+          
+          <!-- HEADER -->
+          <div class="card-header text-white text-center py-5 position-relative"
+               style="background: linear-gradient(135deg, #6a11cb, #ff6ec4);">
+
+            <div class="profile-icon mb-3">
+              <i class="bi bi-person-circle display-4"></i>
+            </div>
+
+            <!-- Highlighted username -->
+            <h2 class="fw-bold mb-1 d-inline-block px-4 py-2 rounded-3 shadow-sm username-badge">
+              {{ user.username }}
+            </h2>
+            <p class="text-light small mb-0">@{{ user.username|lower }}</p>
+          </div>
+
+          <!-- BODY -->
+          <div class="card-body text-center py-4">
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2">
+                <i class="bi bi-envelope text-primary"></i> 
+                <strong>Email:</strong> {{ user.email }}
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-calendar-check text-success"></i> 
+                <strong>Joined:</strong> {{ user.date_joined|date:"M d, Y" }}
+              </li>
+              <li>
+                <i class="bi bi-clock-history text-warning"></i> 
+                <strong>Last Login:</strong> {{ user.last_login|date:"M d, Y, H:i" }}
+              </li>
+            </ul>
+
+            <div class="d-grid gap-3">
+              <a href="{% url 'my_blogs' %}" class="btn btn-outline-primary btn-lg shadow-sm">
+                <i class="bi bi-journal-text"></i> View My Blogs
+              </a>
+              <a href="{% url 'create_blog' %}" class="btn btn-success btn-lg shadow-sm">
+                <i class="bi bi-plus-circle"></i> Create New Blog
+              </a>
+
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-lg shadow-sm">
+                  <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card-footer text-center text-muted py-3">
+            <small>Member since {{ user.date_joined|date:"F Y" }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STYLING -->
+<style>
+  .profile-page {
+    background: linear-gradient(to right, #f8f9fa, #e3f2fd);
+    min-height: 100vh;
+  }
+
+  .card {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .profile-icon i {
+    font-size: 4rem;
+    color: #ffffff;
+  }
+
+  .card-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+
+  /* Username badge with contrasting color */
+  .username-badge {
+    background: linear-gradient(90deg, #ffffff, #ffe6ff);
+    color: #6a11cb;  /* Deep purple text */
+    border: 2px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .username-badge:hover {
+    background: #fff0fa;
+    color: #ff47b5;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn {
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+  }
+</style>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}

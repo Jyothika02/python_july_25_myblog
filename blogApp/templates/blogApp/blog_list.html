@@ -1,0 +1,25 @@
+{% extends 'blogApp/base.html' %}
+{% block title %}All Blogs{% endblock %}
+{% block content %}
+  <h1 class="mb-4">All Blogs</h1>
+  <div class="row gy-4">
+    {% for blog in blogs %}
+      <div class="col-md-6">
+        <div class="card h-100">
+          {% if blog.image %}
+            <img src="{{ blog.image.url }}" class="card-img-top" alt="{{ blog.title }}">
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title"><a href="{% url 'blog_detail' blog.pk %}">{{ blog.title }}</a></h5>
+            <p class="card-text">{{ blog.content|truncatewords:30 }}</p>
+            <div class="mt-auto">
+              <small class="text-muted">By {{ blog.user.username }} • {{ blog.created_at|date:"M d, Y" }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No blogs yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

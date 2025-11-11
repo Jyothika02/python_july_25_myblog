@@ -1,0 +1,5 @@
+/* small custom tweaks */
+.card img {
+  object-fit: cover;
+  height: 220px;
+}

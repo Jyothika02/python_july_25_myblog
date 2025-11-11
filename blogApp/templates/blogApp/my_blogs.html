@@ -1,0 +1,88 @@
+{% extends "blogApp/base.html" %}
+{% block title %}My Blogs{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">My Blogs</h2>
+        <a href="{% url 'create_blog' %}" class="btn btn-success shadow-sm">
+            <i class="bi bi-plus-circle"></i> New Blog
+        </a>
+    </div>
+
+    {% if blogs %}
+    <div class="row g-4">
+        {% for blog in blogs %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm blog-card">
+                {% if blog.image %}
+                <div class="card-img-container">
+                    <img src="{{ blog.image.url }}" class="card-img-top rounded-top" alt="{{ blog.title }}">
+                </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-primary fw-semibold">{{ blog.title }}</h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        {{ blog.content|truncatewords:20 }}
+                    </p>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="{% url 'blog_detail' blog.id %}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye"></i> View
+                        </a>
+                        <!-- <button class="btn btn-outline-secondary btn-sm" disabled>
+                  <i class="bi bi-pencil"></i> Edit
+                </button> -->
+                        <a href="{% url 'edit_blog' blog.id %}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                        <a href="{% url 'delete_blog' blog.id %}" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i> Delete
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0 text-muted small text-end">
+                    <i class="bi bi-calendar3"></i>
+                    {{ blog.created_at|date:"M d, Y" }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center mt-5">
+        <h4 class="text-muted mb-3">You haven’t created any blogs yet.</h4>
+        <a href="{% url 'create_blog' %}" class="btn btn-primary btn-lg shadow-sm">
+            <i class="bi bi-journal-plus"></i> Create your first blog
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Subtle hover animation for cards */
+    .blog-card {
+        transition: all 0.3s ease;
+        border-radius: 10px;
+    }
+
+    .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-img-container {
+        max-height: 200px;
+        overflow: hidden;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .card-img-container img {
+        width: 100%;
+        object-fit: cover;
+        height: 200px;
+    }
+</style>
+
+<!-- Bootstrap Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "blogApp/base.html" %}
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm border-0 mb-4">
+    {% if blog.image %}
+      <img src="{{ blog.image.url }}" class="card-img-top" alt="{{ blog.title }}">
+    {% endif %}
+    <div class="card-body">
+      <h2 class="card-title">{{ blog.title }}</h2>
+      <p class="card-text">{{ blog.content }}</p>
+      <p class="text-muted small mb-0">By <strong>{{ blog.author.username }}</strong> • {{ blog.created_at|date:"M d, Y" }}</p>
+    </div>
+  </div>
+
+  <!-- 💬 Comment Section -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <i class="bi bi-chat-dots"></i> Comments ({{ comments.count }})
+    </div>
+    <div class="card-body">
+      {% if comments %}
+        {% for comment in comments %}
+          <div class="mb-3 border-bottom pb-2">
+            <strong>{{ comment.user.username }}</strong>
+            <p class="mb-1">{{ comment.content }}</p>
+            <small class="text-muted">{{ comment.created_at|date:"M d, Y H:i" }}</small>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted">No comments yet. Be the first to comment!</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ✍️ Comment Form -->
+  <div class="card shadow-sm border-0 mt-4">
+    <div class="card-header bg-light">
+      <strong>Leave a Comment</strong>
+    </div>
+    <div class="card-body">
+      {% if user.is_authenticated %}
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-send"></i> Post Comment
+          </button>
+        </form>
+      {% else %}
+        <p class="text-muted">You must <a href="{% url 'login' %}">login</a> to leave a comment.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
